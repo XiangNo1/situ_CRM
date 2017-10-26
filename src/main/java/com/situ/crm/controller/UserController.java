@@ -21,7 +21,8 @@ public class UserController {
 	
 	@RequestMapping("/findAll")
 	@ResponseBody
-	public EasyUIDataGrideResult findAll() {
-		return userService.findAll();
+	public EasyUIDataGrideResult findAll(Integer page, Integer rows) {
+		System.out.println(page + "+" + rows);
+		return userService.findAll(page, rows);
 	}
 }
