@@ -33,14 +33,17 @@ function closeDialog(){
 }
 
 function doSave(){
+	$.messager.progress();	// 显示进度条
 	$('#form').form('submit', {    
 	    url:url,    
 	    onSubmit: function(){    
 	        // do some check  
 	        if(!$(this).form("validate")){
+	        	$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
 	       		 return $(this).form("validate");
 	        }
 	        if($("#roleName").combobox("getValue") == "") {
+	        	$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
 	        	$.messager.alert("系统提示", "请选择用户角色");
 	        	return false;
 	        }
@@ -48,6 +51,7 @@ function doSave(){
 	        // return false to prevent submit;  
 	    },    
 	    success:function(data){//正常返回ServerResponse
+	    	$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
 	    	var data = eval('(' + data + ')');
 	    	if(data.status == Util.SUCCESS) {
 	    		$.messager.show({
@@ -74,8 +78,10 @@ function doSearch(value){
 };
 
 function doDelete() {
+	$.messager.progress();	// 显示进度条
 	var ids = Util.getSelectionsIds("#datagrid");
 	if(ids.length == 0) {
+		$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
 		$.messager.alert('系统提示','请选择要删除的数据！');
 		return;
 	}
@@ -85,6 +91,7 @@ function doDelete() {
 					"${ctx}/user/delete.action",
 					{ids:ids}, 
 					function(data) {
+						$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
 						$.messager.show({
 							title:'系统提示',
 							msg:data.msg,
