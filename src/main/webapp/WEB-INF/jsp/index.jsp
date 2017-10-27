@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Insert title here</title>
+<title>CRM管理系统</title>
 <script type="text/javascript">
 	function openTab(text, url, iconCls) {
 		if ($("#tabs").tabs("exists", text)) {
@@ -38,7 +38,11 @@
 		<div class="easyui-tabs" fit="true" border="false" id="tabs">
 			<div title="首页" data-options="iconCls:'icon-home'">
 				<div align="center" style="padding-top: 100px">
-					<font color="red" size="10">欢迎使用</font>
+					<font color="red" size="8">欢迎使用CRM管理系统</font>
+					<br/>
+					<br/>
+					<br/>
+					<font color="red" size="10">祝您使用愉快</font>
 				</div>
 			</div>
 		</div>

@@ -17,4 +17,6 @@ public interface IUserService {
 	ServerResponse delete(String ids);
 
 	ServerResponse addUser(User user);
+
+	ServerResponse updateUser(User user);
 }

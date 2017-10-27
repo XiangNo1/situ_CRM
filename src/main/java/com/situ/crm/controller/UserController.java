@@ -16,6 +16,13 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
+	
+	@RequestMapping(value="/updateUser")
+	@ResponseBody
+	public ServerResponse updateUser(User user){
+		return userService.updateUser(user);
+	}
+	
 	@RequestMapping(value="/addUser")
 	@ResponseBody
 	public ServerResponse addUser(User user){

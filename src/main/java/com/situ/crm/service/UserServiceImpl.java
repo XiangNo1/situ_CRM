@@ -47,10 +47,12 @@ public class UserServiceImpl implements IUserService{
 		try {
 			String[] idArray = ids.split(",");
 			for (String id : idArray) {
-				userMapper.deleteByPrimaryKey(Integer.parseInt(id));
+				if(userMapper.deleteByPrimaryKey(Integer.parseInt(id)) <1){
+					return ServerResponse.createError("删除数据失败！");
+				}
 			}
 		} catch (Exception e) {
-			return ServerResponse.createSuccess("删除数据失败！");
+			return ServerResponse.createError("删除数据失败！");
 		}
 		return ServerResponse.createSuccess("删除数据成功！");
 	}
@@ -58,9 +60,23 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public ServerResponse addUser(User user) {
 		try {
-			userMapper.insert(user);
+			if(userMapper.insert(user) < 1){
+				return ServerResponse.createError("添加数据失败！");
+			}
 		} catch (Exception e) {
-			return ServerResponse.createSuccess("添加数据失败！");
+			return ServerResponse.createError("添加数据失败！");
+		}
+		return ServerResponse.createSuccess("添加数据成功！");
+	}
+
+	@Override
+	public ServerResponse updateUser(User user) {
+		try {
+			if(userMapper.updateByPrimaryKey(user) < 1){
+				return ServerResponse.createError("添加数据失败！");
+			}
+		} catch (Exception e) {
+			return ServerResponse.createError("添加数据失败！");
 		}
 		return ServerResponse.createSuccess("添加数据成功！");
 	}
