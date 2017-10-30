@@ -29,8 +29,8 @@ public class UserServiceImpl implements IUserService{
 		PageHelper.startPage(page, rows);
 		//rows(分页之后的数据)
 		Criteria createCriteria = userExample.createCriteria();
-		if (StringUtils.isNotEmpty(user.getUserName())) {
-			createCriteria.andUserNameLike(Util.formatLike(user.getUserName()));
+		if (StringUtils.isNotEmpty(user.getName())) {
+			createCriteria.andNameLike(Util.formatLike(user.getName()));
 		}
 		//list
 		List<User> userList = userMapper.selectByExample(userExample);

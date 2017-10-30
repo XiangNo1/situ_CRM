@@ -73,7 +73,7 @@ function doSave(){
 
 function doSearch(value){
 	$("#datagrid").datagrid("load",{
-		'userName' : value
+		'name' : value
 	})
 };
 
@@ -118,7 +118,7 @@ function doDelete() {
 			<tr>
 				<th data-options="field:'cb',align:'center',checkbox:true"></th>
 				<th data-options="field:'id',width:80,align:'center'">编号</th>
-				<th data-options="field:'userName',width:100,align:'center'">用户名</th>
+				<th data-options="field:'name',width:100,align:'center'">用户名</th>
 				<th data-options="field:'password',width:80,align:'center'">密码</th>
 				<th data-options="field:'trueName',width:80,align:'center'">真实姓名</th>
 				<th data-options="field:'email',width:140,align:'center'">邮件</th>
@@ -139,14 +139,14 @@ function doDelete() {
 	<!-- toolbar 结束 -->
 	
 	<!-- 添加和修改的dialog 开始 -->
-	<div id="dialog" class="easyui-dialog" closed="true"
+	<div id="dialog" class="easyui-dialog" closed="true" modal="true";
 		style="width:650;height:280,padding: 10px 20px" buttons="#dialog-button">
 		<form action="" id="form" method="post">
 			<input type="hidden" id="id" name="id"/>
 			<table cellspacing="8px">
 				<tr>
 					<td>用户名：</td>
-					<td><input type="text" id="userName" name="userName" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+					<td><input type="text" id="name" name="name" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 					<td>密码：</td>
 					<td><input type="text" id="password" name="password" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
