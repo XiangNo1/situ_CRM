@@ -4,23 +4,22 @@ import java.util.List;
 
 import com.situ.crm.common.EasyUIDataGrideResult;
 import com.situ.crm.common.ServerResponse;
-import com.situ.crm.pojo.User;
+import com.situ.crm.pojo.Product;
 
-public interface IUserService {
+public interface IProductService {
 	/**
 	 * 返回所有数据
 	 * @param rows 
 	 * @param page 
-	 * @param userName 
+	 * @param productName 
 	 * @return 分装好的EasyUIDataGrideResult对象
 	 */
-	EasyUIDataGrideResult findAll(Integer page, Integer rows, User user);
+	EasyUIDataGrideResult findAll(Integer page, Integer rows, Product product);
 
 	ServerResponse delete(String ids);
 
-	ServerResponse addUser(User user);
+	ServerResponse addProduct(Product product);
 
-	ServerResponse updateUser(User user);
+	ServerResponse updateProduct(Product product);
 
-	List<User> findRoleName();
 }

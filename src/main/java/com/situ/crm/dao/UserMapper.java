@@ -93,4 +93,10 @@ public interface UserMapper {
      * @mbggenerated Mon Oct 30 18:56:18 CST 2017
      */
     int updateByPrimaryKey(User record);
+
+    /**
+     * 返回userRole去重之后的结果
+     * @return
+     */
+	List<User> findRoleName();
 }

@@ -11,56 +11,40 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrideResult;
 import com.situ.crm.common.ServerResponse;
-import com.situ.crm.dao.UserMapper;
-import com.situ.crm.pojo.User;
-import com.situ.crm.pojo.UserExample;
-import com.situ.crm.pojo.UserExample.Criteria;
+import com.situ.crm.dao.ProductMapper;
+import com.situ.crm.pojo.Product;
+import com.situ.crm.pojo.ProductExample;
+import com.situ.crm.pojo.ProductExample.Criteria;
 import com.situ.crm.util.Util;
 
 @Service
-public class UserServiceImpl implements IUserService{
+public class ProductServiceImpl implements IProductService{
 	@Autowired
-	private UserMapper userMapper;
+	private ProductMapper productMapper;
 
 	@Override
-	public EasyUIDataGrideResult findAll(Integer page, Integer rows, User user) {
+	public EasyUIDataGrideResult findAll(Integer page, Integer rows, Product product) {
 		EasyUIDataGrideResult result = new EasyUIDataGrideResult();
-		UserExample userExample = new UserExample();
+		ProductExample productExample = new ProductExample();
 		//设置分页
 		PageHelper.startPage(page, rows);
 		//rows(分页之后的数据)
-		Criteria createCriteria = userExample.createCriteria();
-		if (StringUtils.isNotEmpty(user.getName())) {
+		Criteria createCriteria = productExample.createCriteria();
+		if (StringUtils.isNotEmpty(product.getName())) {
 			try {
-				createCriteria.andNameLike(Util.formatLike(new String(user.getName().getBytes("iso-8859-1"),"utf-8")));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if (StringUtils.isNotEmpty(user.getTrueName())) {
-			try {
-				createCriteria.andTrueNameLike(new String(user.getTrueName().getBytes("iso-8859-1"),"utf-8"));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if (StringUtils.isNotEmpty(user.getRoleName())) {
-			try {
-				createCriteria.andRoleNameEqualTo(new String(user.getRoleName().getBytes("iso-8859-1"),"utf-8"));
+				createCriteria.andNameLike(Util.formatLike(new String(product.getName().getBytes("iso-8859-1"),"utf-8")));
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		//list
-		List<User> userList = userMapper.selectByExample(userExample);
-		PageInfo<User> pageInfo = new PageInfo<>(userList);
+		List<Product> productList = productMapper.selectByExample(productExample);
+		PageInfo<Product> pageInfo = new PageInfo<>(productList);
 		//total
 		Integer total = (int) pageInfo.getTotal();
 		result.setTotal(total);
-		result.setRows(userList);
+		result.setRows(productList);
 		return result;
 	}
 
@@ -69,7 +53,7 @@ public class UserServiceImpl implements IUserService{
 		try {
 			String[] idArray = ids.split(",");
 			for (String id : idArray) {
-				if(userMapper.deleteByPrimaryKey(Integer.parseInt(id)) <1){
+				if(productMapper.deleteByPrimaryKey(Integer.parseInt(id)) <1){
 					return ServerResponse.createError("删除数据失败！");
 				}
 			}
@@ -80,9 +64,9 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public ServerResponse addUser(User user) {
+	public ServerResponse addProduct(Product product) {
 		try {
-			if(userMapper.insert(user) < 1){
+			if(productMapper.insert(product) < 1){
 				return ServerResponse.createError("添加数据失败！");
 			}
 		} catch (Exception e) {
@@ -92,21 +76,15 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public ServerResponse updateUser(User user) {
+	public ServerResponse updateProduct(Product product) {
 		try {
-			if(userMapper.updateByPrimaryKey(user) < 1){
+			if(productMapper.updateByPrimaryKey(product) < 1){
 				return ServerResponse.createError("添加数据失败！");
 			}
 		} catch (Exception e) {
 			return ServerResponse.createError("添加数据失败！");
 		}
 		return ServerResponse.createSuccess("添加数据成功！");
-	}
-
-	@Override
-	public List<User> findRoleName() {
-		// TODO Auto-generated method stub
-		return userMapper.findRoleName();
 	}
 
 }
