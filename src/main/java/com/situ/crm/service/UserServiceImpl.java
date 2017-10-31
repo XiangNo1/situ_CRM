@@ -171,4 +171,27 @@ public class UserServiceImpl implements IUserService{
 		return ServerResponse.createSuccess("修改数据成功！");
 	}
 
+	@Override
+	public User login2(String name, String password) {
+		EasyUIDataGrideResult result = new EasyUIDataGrideResult();
+		UserExample userExample = new UserExample();
+		Criteria createCriteria = userExample.createCriteria();
+		if (StringUtils.isNotEmpty(name)) {
+			try {
+				createCriteria.andNameEqualTo(new String(name.getBytes("iso-8859-1"),"utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//list
+		List<User> userList = userMapper.selectByExample(userExample);
+		for (User user : userList) {
+			if(user.getPassword().equals(password)){
+				return user;
+			}
+		}
+		return null;
+	}
+
 }

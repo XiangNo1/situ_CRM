@@ -29,4 +29,6 @@ public interface IUserService {
 	Boolean checkPassowrd(String password, String name);
 
 	ServerResponse updateUserByName(User user);
+
+	User login2(String name, String password);
 }

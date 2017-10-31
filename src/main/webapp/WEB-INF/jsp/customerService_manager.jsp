@@ -10,7 +10,7 @@
 $(function(){
 	/*展示数据的datagrid表格*/
 	$("#datagrid").datagrid({
-		url:'${ctx}/user/findAll.action',
+		url:'${ctx}/customerService/findAll.action',
 		method:'get',
 		fit:true,
 		singleSelect:false,
@@ -21,9 +21,9 @@ $(function(){
 		columns:[[    
 		     {field:'cb',checkbox:true,align:'center'},    
 		     {field:'id',title:'编号',width:80,align:'center'},    
-		     {field:'name',title:'用户名',width:100,align:'center'},    
-		     {field:'password',title:'密码',width:80,align:'center'},    
-		     {field:'trueName',title:'真实姓名',width:80,align:'center'},    
+		     {field:'customer',title:'客户名',width:100,align:'center'},    
+		     {field:'overview',title:'概要',width:80,align:'center'},    
+		     {field:'trueName',title:'联系人',width:80,align:'center'},    
 		     {field:'email',title:'邮件',width:100,align:'center'},    
 		     {field:'phone',title:'联系电话',width:100,align:'center'},    
 		     {field:'roleName',title:'角色',width:100,align:'center'}    
@@ -58,7 +58,7 @@ var url;
 /* 打开添加dialog */
 function openAddDialog() {
 	$("#dialog").dialog("open").dialog("setTitle","添加信息");
-	url = "${ctx}/user/addUser.action";
+	url = "${ctx}/customerService/addCustomerService.action";
 	$('#form').form("clear");
 	
 }
@@ -71,7 +71,7 @@ function openUpdateDialog() {
 	}
 	var row = selections[0];
 	$("#dialog").dialog("open").dialog("setTitle","修改信息");
-	url = "${ctx}/user/updateUser.action";
+	url = "${ctx}/customerService/updateCustomerService.action";
 	$('#form').form("load", row);
 }
 
@@ -137,7 +137,7 @@ function doDelete() {
 	$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
 	    if (r){    
 	    	$.post(
-					"${ctx}/user/delete.action",
+					"${ctx}/customerService/delete.action",
 					{ids:ids}, 
 					function(data) {
 						$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
@@ -180,7 +180,7 @@ function doDelete() {
 		       真实姓名：<input type="text" id="trueNameSearch"></input>
 		       角色：<input type="text" id="roleNameSearch" class="easyui-combobox"
 					 data-options="
-					 	url:'${ctx}/user/findRoleName.action',
+					 	url:'${ctx}/customerService/findRoleName.action',
 					 	valueField: 'roleName',
 					 	textField: 'roleName',
 					 	panelHeight:'auto',

@@ -8,6 +8,36 @@
 <title>CRM管理系统</title>
 <script type="text/javascript">
 
+function logout(){
+	$.messager.progress();	// 显示进度条
+	$.messager.confirm('确认','您确认想要退出吗？',function(r){    
+	    if (r){ 
+	    	$.post(
+					"${ctx}/login/loginout.action",
+					function(data) {
+						$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
+						if(data.status == 0) {
+							$.messager.show({
+								title:'系统提示',
+								msg:data.msg,
+								timeout:3000,
+								showType:'fade'
+							});
+							window.location.href="${ctx}/login/login.action";
+						}
+						else{
+							$.messager.alert(data.msg);
+						}
+					},
+					"json"
+				);
+	    }
+	    else{
+	    	$.messager.progress('close');
+	    }
+	}); 
+}
+
 //检查密码是否相同    
 $.extend($.fn.validatebox.defaults.rules, {    
     equals: {    
@@ -152,7 +182,7 @@ function openTab(text, url, iconCls) {
 			<tr>
 				<td width="50%"><img alt="logo"
 					src="${pageContext.request.contextPath}/images/bglogo.png"></td>
-				<td valign="bottom" align="right" width="50%"><font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.userName }</font>【${currentUser.trueName }】【${currentUser.roleName }】
+				<td valign="bottom" align="right" width="50%"><font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.name }</font>【${currentUser.trueName }】【${currentUser.roleName }】
 				</td>
 			</tr>
 		</table>
@@ -175,7 +205,7 @@ function openTab(text, url, iconCls) {
 			<div title="营销管理" data-options="selected:true,iconCls:'icon-yxgl'"
 				style="padding: 10px">
 				<a
-					href="javascript:openTab('营销机会管理','saleChanceManage.jsp','icon-yxjhgl')"
+					href="javascript:openTab('营销机会管理','${ctx}/customerService/index.action','icon-yxjhgl')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-yxjhgl'"
 					style="width: 150px">营销机会管理</a> <a
