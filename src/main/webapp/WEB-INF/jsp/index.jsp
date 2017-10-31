@@ -205,7 +205,7 @@ function openTab(text, url, iconCls) {
 			<div title="营销管理" data-options="selected:true,iconCls:'icon-yxgl'"
 				style="padding: 10px">
 				<a
-					href="javascript:openTab('营销机会管理','${ctx}/customerService/index.action','icon-yxjhgl')"
+					href="javascript:openTab('营销机会管理','${ctx}/saleChance/index.action','icon-yxjhgl')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-yxjhgl'"
 					style="width: 150px">营销机会管理</a> <a
