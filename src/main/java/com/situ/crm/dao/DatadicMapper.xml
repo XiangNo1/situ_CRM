@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.situ.crm.dao.DataDicMapper" >
+	
+	<select id="findDataDicName" resultMap="BaseResultMap">
+		select distinct data_dic_name from data_dic
+	</select>
+
   <resultMap id="BaseResultMap" type="com.situ.crm.pojo.DataDic" >
     <!--
       WARNING - @mbggenerated

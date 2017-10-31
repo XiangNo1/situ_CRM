@@ -60,7 +60,6 @@ function openAddDialog() {
 	$("#dialog").dialog("open").dialog("setTitle","添加信息");
 	url = "${ctx}/product/addProduct.action";
 	$('#form').form("clear");
-	
 }
 /* 打开修改dialog */
 function openUpdateDialog() {
@@ -146,7 +145,10 @@ function doDelete() {
 					},
 					"json"
 				);
-	    }    
+	    }
+	    else {
+	    	$.messager.progress('close');
+	    }
 	}); 
 }
 

@@ -7,6 +7,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>CRM管理系统</title>
 <script type="text/javascript">
+$(function(){
+	/*修改密码弹出的dialog */
+	$("#dialog").dialog({
+		closed:'true',
+		buttons:[
+			{
+				text:'保存',
+				iconCls:'icon-ok',
+				handler:function(){
+					doSave();
+				}
+			},
+			{
+				text:'关闭',
+				iconCls:'icon-cancel',
+				handler:function(){
+					$("#dialog").dialog("close");
+				}
+			}
+			
+		]
+		
+	});
+});
+
+function openPasswordModifyDialog(){
+	
+}
+
 	function openTab(text, url, iconCls) {
 		if ($("#tabs").tabs("exists", text)) {
 			$("#tabs").tabs("select", text);
@@ -118,7 +147,7 @@
 			<div title="基础数据管理" data-options="iconCls:'icon-jcsjgl'"
 				style="padding: 10px">
 				<a
-					href="javascript:openTab('数据字典管理','dataDicManage.jsp','icon-sjzdgl')"
+					href="javascript:openTab('数据字典管理','${ctx}/dataDic/index.action','icon-sjzdgl')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-sjzdgl'"
 					style="width: 150px;">数据字典管理</a> <a
@@ -145,5 +174,30 @@
 		Java1707CRM管理系统
 	</div>
 
+	<!-- 修改密码的dialog 开始 -->
+	<div id="dialog" class="easyui-dialog" closed="true" modal="true";
+		style="width:650;height:280,padding: 10px 20px" buttons="#dialog-button">
+		<form action="" id="form" method="post">
+			<input type="hidden" id="id" name="id"/>
+			<table cellspacing="8px">
+				<tr>
+					<td>用户名：</td>
+					<td><input type="text" id="name" name="name" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+				</tr>
+				<tr>
+					<td>真实姓名：</td>
+					<td><input type="text" id="trueName" name="trueName" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<!-- 修改密码的dialog 结束 -->
+	
+	<!-- dialog-button 开始-->
+	<div id="dialog-button">
+		<a href="javascript:doSave()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+		<a href="javascript:closeDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+	</div>
+	<!-- dialog-button 结束-->
 </body>
 </html>

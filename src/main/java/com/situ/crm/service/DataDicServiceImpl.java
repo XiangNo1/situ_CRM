@@ -11,56 +11,48 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrideResult;
 import com.situ.crm.common.ServerResponse;
-import com.situ.crm.dao.UserMapper;
-import com.situ.crm.pojo.User;
-import com.situ.crm.pojo.UserExample;
-import com.situ.crm.pojo.UserExample.Criteria;
+import com.situ.crm.dao.DataDicMapper;
+import com.situ.crm.pojo.DataDic;
+import com.situ.crm.pojo.DataDicExample;
+import com.situ.crm.pojo.DataDicExample.Criteria;
 import com.situ.crm.util.Util;
 
 @Service
-public class UserServiceImpl implements IUserService{
+public class DataDicServiceImpl implements IDataDicService{
 	@Autowired
-	private UserMapper userMapper;
+	private DataDicMapper dataDicMapper;
 
 	@Override
-	public EasyUIDataGrideResult findAll(Integer page, Integer rows, User user) {
+	public EasyUIDataGrideResult findAll(Integer page, Integer rows, DataDic dataDic) {
 		EasyUIDataGrideResult result = new EasyUIDataGrideResult();
-		UserExample userExample = new UserExample();
+		DataDicExample dataDicExample = new DataDicExample();
 		//设置分页
 		PageHelper.startPage(page, rows);
 		//rows(分页之后的数据)
-		Criteria createCriteria = userExample.createCriteria();
-		if (StringUtils.isNotEmpty(user.getName())) {
+		Criteria createCriteria = dataDicExample.createCriteria();
+		if (StringUtils.isNotEmpty(dataDic.getDataDicName())) {
 			try {
-				createCriteria.andNameLike(Util.formatLike(new String(user.getName().getBytes("iso-8859-1"),"utf-8")));
+				createCriteria.andDataDicNameEqualTo(new String(dataDic.getDataDicName().getBytes("iso-8859-1"),"utf-8"));
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		if (StringUtils.isNotEmpty(user.getTrueName())) {
+		if (StringUtils.isNotEmpty(dataDic.getDataDicValue())) {
 			try {
-				createCriteria.andTrueNameLike(Util.formatLike(new String(user.getTrueName().getBytes("iso-8859-1"),"utf-8")));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if (StringUtils.isNotEmpty(user.getRoleName())) {
-			try {
-				createCriteria.andRoleNameEqualTo(new String(user.getRoleName().getBytes("iso-8859-1"),"utf-8"));
+				createCriteria.andDataDicValueLike(Util.formatLike(new String(dataDic.getDataDicValue().getBytes("iso-8859-1"),"utf-8")));
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		//list
-		List<User> userList = userMapper.selectByExample(userExample);
-		PageInfo<User> pageInfo = new PageInfo<>(userList);
+		List<DataDic> dataDicList = dataDicMapper.selectByExample(dataDicExample);
+		PageInfo<DataDic> pageInfo = new PageInfo<>(dataDicList);
 		//total
 		Integer total = (int) pageInfo.getTotal();
 		result.setTotal(total);
-		result.setRows(userList);
+		result.setRows(dataDicList);
 		return result;
 	}
 
@@ -69,7 +61,7 @@ public class UserServiceImpl implements IUserService{
 		try {
 			String[] idArray = ids.split(",");
 			for (String id : idArray) {
-				if(userMapper.deleteByPrimaryKey(Integer.parseInt(id)) <1){
+				if(dataDicMapper.deleteByPrimaryKey(Integer.parseInt(id)) <1){
 					return ServerResponse.createError("删除数据失败！");
 				}
 			}
@@ -80,9 +72,9 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public ServerResponse addUser(User user) {
+	public ServerResponse addDataDic(DataDic dataDic) {
 		try {
-			if(userMapper.insert(user) < 1){
+			if(dataDicMapper.insert(dataDic) < 1){
 				return ServerResponse.createError("添加数据失败！");
 			}
 		} catch (Exception e) {
@@ -92,9 +84,9 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public ServerResponse updateUser(User user) {
+	public ServerResponse updateDataDic(DataDic dataDic) {
 		try {
-			if(userMapper.updateByPrimaryKey(user) < 1){
+			if(dataDicMapper.updateByPrimaryKey(dataDic) < 1){
 				return ServerResponse.createError("添加数据失败！");
 			}
 		} catch (Exception e) {
@@ -104,9 +96,9 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public List<User> findRoleName() {
+	public List<DataDic> findDataDicName() {
 		// TODO Auto-generated method stub
-		return userMapper.findRoleName();
+		return dataDicMapper.findDataDicName();
 	}
 
 }

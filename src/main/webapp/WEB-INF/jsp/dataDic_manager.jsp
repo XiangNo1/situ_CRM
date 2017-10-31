@@ -10,7 +10,7 @@
 $(function(){
 	/*展示数据的datagrid表格*/
 	$("#datagrid").datagrid({
-		url:'${ctx}/user/findAll.action',
+		url:'${ctx}/dataDic/findAll.action',
 		method:'get',
 		fit:true,
 		singleSelect:false,
@@ -19,15 +19,11 @@ $(function(){
 		fitColumns:true,
 		pagination:true,
 		columns:[[    
-		     {field:'cb',checkbox:true,align:'center'},    
-		     {field:'id',title:'编号',width:80,align:'center'},    
-		     {field:'name',title:'用户名',width:100,align:'center'},    
-		     {field:'password',title:'密码',width:80,align:'center'},    
-		     {field:'trueName',title:'真实姓名',width:80,align:'center'},    
-		     {field:'email',title:'邮件',width:100,align:'center'},    
-		     {field:'phone',title:'联系电话',width:100,align:'center'},    
-		     {field:'roleName',title:'角色',width:100,align:'center'}    
-		]]  
+				     {field:'cb',checkbox:true,align:'center'},    
+				     {field:'id',title:'编号',width:80,align:'center'},    
+				     {field:'dataDicName',title:'数据字典名',width:100,align:'center'},    
+				     {field:'dataDicValue',title:'数据字典值',width:80,align:'center'},    
+				]]   
 	});
 	/*添加和修改弹出的dialog */
 	$("#dialog").dialog({
@@ -58,7 +54,7 @@ var url;
 /* 打开添加dialog */
 function openAddDialog() {
 	$("#dialog").dialog("open").dialog("setTitle","添加信息");
-	url = "${ctx}/user/addUser.action";
+	url = "${ctx}/dataDic/addDataDic.action";
 	$('#form').form("clear");
 	
 }
@@ -71,7 +67,7 @@ function openUpdateDialog() {
 	}
 	var row = selections[0];
 	$("#dialog").dialog("open").dialog("setTitle","修改信息");
-	url = "${ctx}/user/updateUser.action";
+	url = "${ctx}/dataDic/updateDataDic.action";
 	$('#form').form("load", row);
 }
 
@@ -85,14 +81,14 @@ function doSave(){
 	    url:url,    
 	    onSubmit: function(){    
 	        // do some check  
-	        if(!$(this).form("validate")){
-	        	$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
-	       		 return $(this).form("validate");
-	        }
-	        if($("#roleName").combobox("getValue") == "") {
+	        if($("#dataDicName").combobox("getValue") == "") {
 	        	$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
 	        	$.messager.alert("系统提示", "请选择用户角色");
 	        	return false;
+	        }
+	        if(!$(this).form("validate")){
+	        	$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
+	       		 return $(this).form("validate");
 	        }
 	        //validate none 做表单字段验证，当所有字段都有效的时候返回true。该方法使用validatebox(验证框)插件。 
 	        // return false to prevent submit;  
@@ -120,9 +116,8 @@ function doSave(){
 
 function doSearch(){
 	$("#datagrid").datagrid("load",{
-		'name' : $("#nameSearch").val(),
-		'trueName' : $("#trueNameSearch").val(),
-		'roleName' : $("#roleNameSearch").val()
+		'dataDicName' : $("#dataDicNameSearch").val(),
+		'dataDicValue' : $("#dataDicValueSearch").val(),
 	})
 };
 
@@ -137,7 +132,7 @@ function doDelete() {
 	$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
 	    if (r){    
 	    	$.post(
-					"${ctx}/user/delete.action",
+					"${ctx}/dataDic/delete.action",
 					{ids:ids}, 
 					function(data) {
 						$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
@@ -154,7 +149,7 @@ function doDelete() {
 					"json"
 				);
 	    }
-	    else{
+	    else {
 	    	$.messager.progress('close');
 	    }
 	}); 
@@ -173,15 +168,14 @@ function doDelete() {
 		<a class="easyui-linkbutton" href="javascript:doDelete()" iconCls="icon-remove">删除</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<div>
-		      用户名：<input type="text" id="nameSearch"></input>
-		       真实姓名：<input type="text" id="trueNameSearch"></input>
-		       角色：<input type="text" id="roleNameSearch" class="easyui-combobox"
+		     数据字典名：<input type="text" id="dataDicNameSearch" class="easyui-combobox"
 					 data-options="
-					 	url:'${ctx}/user/findRoleName.action',
-					 	valueField: 'roleName',
-					 	textField: 'roleName',
+					 	url:'${ctx}/dataDic/findDataDicName.action',
+					 	valueField: 'dataDicName',
+					 	textField: 'dataDicName',
 					 	panelHeight:'auto',
 					 	editable:false  "/>
+		       数据字典值：<input type="text" id="dataDicValueSearch"></input>
 		  <a href="javascript:doSearch();" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
 		</div>
 	</div>
@@ -194,33 +188,17 @@ function doDelete() {
 			<input type="hidden" id="id" name="id"/>
 			<table cellspacing="8px">
 				<tr>
-					<td>用户名：</td>
-					<td><input type="text" id="name" name="name" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+					<td>数据字典名：</td>
+					<td><input type="text" id="dataDicName" name="dataDicName" class="easyui-combobox"
+					 data-options="
+					 	url:'${ctx}/dataDic/findDataDicName.action',
+					 	valueField: 'dataDicName',
+					 	textField: 'dataDicName',
+					 	editable:false,
+					 	panelHeight:'auto' "/><font color="red">*</font></td>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>密码：</td>
-					<td><input type="text" id="password" name="password" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
-				</tr>
-				<tr>
-					<td>真实姓名：</td>
-					<td><input type="text" id="trueName" name="trueName" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>邮箱：</td>
-					<td><input type="text" id="email" name="email" class="easyui-validatebox" required="true" validType="email"/><font color="red">*</font></td>
-				</tr>
-				<tr>
-					<td>联系电话：</td>
-					<td><input type="text" id="phone" name="phone" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>用户角色：</td>
-					<td>
-						<select class="easyui-combobox" id="roleName" name="roleName" editable="false" style="width:175">
-							<option value=""></option>
-							<option value="系统管理员">系统管理员</option>
-							<option value="销售主管">销售主管</option>
-							<option value="客户经理">客户经理</option>
-							<option value="高管">高管</option>
-						</select>
-						<font color="red">*</font></td>
+					<td>数据字典值：</td>
+					<td><input type="text" id="dataDicValue" name="dataDicValue" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
 				</tr>
 			</table>
 		</form>

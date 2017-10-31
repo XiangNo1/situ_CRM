@@ -93,4 +93,6 @@ public interface DataDicMapper {
      * @mbggenerated Mon Oct 30 18:56:18 CST 2017
      */
     int updateByPrimaryKey(DataDic record);
+
+	List<DataDic> findDataDicName();
 }
