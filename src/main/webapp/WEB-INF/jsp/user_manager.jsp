@@ -227,14 +227,6 @@ function doDelete() {
 	</div>
 	<!-- 添加和修改的dialog 结束 -->
 	
-	<!-- dialog-button 开始-->
-	<div id="dialog-button">
-		<a href="javascript:doSave()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
-		<a href="javascript:closeDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
-	</div>
-	<!-- dialog-button 结束-->
-
-
 
 </body>
 </html>

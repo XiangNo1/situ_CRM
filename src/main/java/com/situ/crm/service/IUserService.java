@@ -23,4 +23,10 @@ public interface IUserService {
 	ServerResponse updateUser(User user);
 
 	List<User> findRoleName();
+
+	Boolean checkName(String name);
+
+	Boolean checkPassowrd(String password, String name);
+
+	ServerResponse updateUserByName(User user);
 }

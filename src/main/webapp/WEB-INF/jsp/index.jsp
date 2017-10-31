@@ -7,7 +7,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>CRM管理系统</title>
 <script type="text/javascript">
+
+//检查密码是否相同    
+$.extend($.fn.validatebox.defaults.rules, {    
+    equals: {    
+        validator: function(value,param){    
+            return value == $(param[0]).val();    
+        },    
+        message: '两次输入的密码不相同！'   
+    }    
+}); 
+//检查名字
+$.extend($.fn.validatebox.defaults.rules, {    
+    nameEquals: {
+        validator: function(value,param){
+        	var flag;
+        	$.ajax({
+        			 type : 'post',
+                     async : false,
+                     url : "${ctx}/login/checkName.action", //url
+                     data :{"name":value}, //data
+                     success : function(data) { //callback
+                    	if(data) {
+                    		flag = true; 
+                        } else {
+                        	flag = false; 
+                        }
+                    }
+        	});
+            return flag;    
+        },    
+        message: '请输入正确的用户名！'   
+    }    
+}); 
+//检查密码
+$.extend($.fn.validatebox.defaults.rules, {    
+    passwordEquals: {
+        validator: function(value,param){
+        	var flag;
+        	$.ajax({
+        			 type : 'post',
+                     async : false,
+                     url : "${ctx}/login/checkPassword.action", //url
+                     data :{
+                    	  "password":$(this).val(),
+                    	  "name" : $("#name").val()
+                    	 }, //data
+                     success : function(data) { //callback
+                    	if(data) {
+                    		flag = true; 
+                        } else {
+                        	flag = false; 
+                        }
+                    }
+        	});
+            return flag;    
+        },    
+        message: '请输入正确的密码！'   
+    }    
+}); 
+
 $(function(){
+	
 	/*修改密码弹出的dialog */
 	$("#dialog").dialog({
 		closed:'true',
@@ -31,25 +92,58 @@ $(function(){
 		
 	});
 });
-
-function openPasswordModifyDialog(){
-	
+function doSave(){
+	$.messager.progress();	// 显示进度条
+	$('#form').form('submit', {    
+	    url:'${ctx}/login/updatePassword.action',    
+	    onSubmit: function(){    
+	        // do some check  
+	        if(!$(this).form("validate")){
+	        	$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
+	       		 return $(this).form("validate");
+	        }
+	        //validate none 做表单字段验证，当所有字段都有效的时候返回true。该方法使用validatebox(验证框)插件。 
+	        // return false to prevent submit;  
+	    },    
+	    success:function(data){//正常返回ServerResponse
+	    	$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
+	    	var data = eval('(' + data + ')');
+	    	if(data.status == Util.SUCCESS) {
+	    		$.messager.show({
+					title:'系统提示',
+					msg:data.msg,
+					timeout:3000,
+					showType:'fade'
+				});
+	    		$("#dialog").dialog("close");
+	    	}
+	    	else {
+				$.messager.alert('系统提示',data.msg);
+			}
+	    }    
+	});  
 }
 
-	function openTab(text, url, iconCls) {
-		if ($("#tabs").tabs("exists", text)) {
-			$("#tabs").tabs("select", text);
-		} else {
-			var content = "<iframe frameborder=0 scrolling='auto' style='width:100%;height:100%' src='"
-					+ url + "'></iframe>";
-			$("#tabs").tabs("add", {
-				title : text,
-				iconCls : iconCls,
-				closable : true,
-				content : content
-			});
-		}
+
+function openPasswordModifyDialog(){
+	$("#dialog").dialog("open").dialog("setTitle","修改密码");
+	$('#form').form("clear");
+}
+
+function openTab(text, url, iconCls) {
+	if ($("#tabs").tabs("exists", text)) {
+		$("#tabs").tabs("select", text);
+	} else {
+		var content = "<iframe frameborder=0 scrolling='auto' style='width:100%;height:100%' src='"
+				+ url + "'></iframe>";
+		$("#tabs").tabs("add", {
+			title : text,
+			iconCls : iconCls,
+			closable : true,
+			content : content
+		});
 	}
+}
 </script>
 </head>
 <body class="easyui-layout">
@@ -176,28 +270,29 @@ function openPasswordModifyDialog(){
 
 	<!-- 修改密码的dialog 开始 -->
 	<div id="dialog" class="easyui-dialog" closed="true" modal="true";
-		style="width:650;height:280,padding: 10px 20px" buttons="#dialog-button">
+		style="width:480;height:380,padding: 10px 20px" buttons="#dialog-button">
 		<form action="" id="form" method="post">
-			<input type="hidden" id="id" name="id"/>
 			<table cellspacing="8px">
 				<tr>
 					<td>用户名：</td>
-					<td><input type="text" id="name" name="name" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+					<td><input type="text" validType="nameEquals['#name']" id="name" missingMessage="请输入用户名" name="name" class="easyui-validatebox" required="true"/><font color="red" id="nameCheck">*</font></td>
 				</tr>
 				<tr>
-					<td>真实姓名：</td>
-					<td><input type="text" id="trueName" name="trueName" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+					<td>原密码：</td>
+					<td><input type="password" validType="passwordEquals['#password']" id="password" missingMessage="请输入原密码" class="easyui-validatebox" required="true"/><font color="red" id="passwordCheck">*</font></td>
+				</tr>
+				<tr>
+					<td>新密码：</td>
+					<td><input type="password" id="newPassword1" missingMessage="请输入新密码" name="password" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+				</tr>
+				<tr>
+					<td>确认密码：</td>
+					<td><input type="password" validType="equals['#newPassword1']"  id="newPpassword2" missingMessage="请确认新密码" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
 				</tr>
 			</table>
 		</form>
 	</div>
 	<!-- 修改密码的dialog 结束 -->
 	
-	<!-- dialog-button 开始-->
-	<div id="dialog-button">
-		<a href="javascript:doSave()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
-		<a href="javascript:closeDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
-	</div>
-	<!-- dialog-button 结束-->
 </body>
 </html>

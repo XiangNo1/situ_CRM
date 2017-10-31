@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.situ.crm.dao.UserMapper" >
+	<update id="updateUserByName" parameterType="com.situ.crm.pojo.User">
+		update user set password=#{password} where name=#{name}
+	</update>
+
 	<select id="findRoleName" resultMap="BaseResultMap">
 		select distinct role_name from user	
 	</select>

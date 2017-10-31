@@ -99,4 +99,6 @@ public interface UserMapper {
      * @return
      */
 	List<User> findRoleName();
+
+	int updateUserByName(User user);
 }

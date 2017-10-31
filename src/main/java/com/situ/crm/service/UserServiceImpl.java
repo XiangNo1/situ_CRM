@@ -109,4 +109,66 @@ public class UserServiceImpl implements IUserService{
 		return userMapper.findRoleName();
 	}
 
+	@Override
+	public Boolean checkName(String name) {
+		EasyUIDataGrideResult result = new EasyUIDataGrideResult();
+		UserExample userExample = new UserExample();
+		Criteria createCriteria = userExample.createCriteria();
+		if (StringUtils.isNotEmpty(name)) {
+			try {
+				createCriteria.andNameEqualTo(new String(name.getBytes("iso-8859-1"),"utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//list
+		List<User> userList = userMapper.selectByExample(userExample);
+		for (User user : userList) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean checkPassowrd(String password, String name) {
+		EasyUIDataGrideResult result = new EasyUIDataGrideResult();
+		UserExample userExample = new UserExample();
+		Criteria createCriteria = userExample.createCriteria();
+		if (StringUtils.isNotEmpty(name)) {
+			try {
+				createCriteria.andNameEqualTo(new String(name.getBytes("iso-8859-1"),"utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (StringUtils.isNotEmpty(password)) {
+			try {
+				createCriteria.andPasswordEqualTo(new String(password.getBytes("iso-8859-1"),"utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//list
+		List<User> userList = userMapper.selectByExample(userExample);
+		for (User user : userList) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public ServerResponse updateUserByName(User user) {
+		try {
+			if(userMapper.updateUserByName(user) < 1){
+				return ServerResponse.createError("修改数据失败！");
+			}
+		} catch (Exception e) {
+			return ServerResponse.createError("修改数据失败！");
+		}
+		return ServerResponse.createSuccess("修改数据成功！");
+	}
+
 }
