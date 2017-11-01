@@ -23,7 +23,10 @@
 <script type="text/javascript" src="${ctx}/resources/thirdlib/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
 </head>
 <body>
-<div style="margin: 150px 500px;">
+<div style="color: red; margin-top: 40px; margin-left: 50px;">
+	<p style="font-size: 45px;">欢迎进入CRM管理系统！请登录</p>
+</div>
+<div style="margin: 100px 500px;">
 <div class="easyui-panel" title="Login to system" style="width:400px;padding:30px 70px 20px 70px;">
 	<div style="margin-bottom:10px">
 		<input class="easyui-textbox" id="name" style="width:100%;height:40px;padding:12px" data-options="prompt:'Username',iconCls:'icon-man',iconWidth:38">

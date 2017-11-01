@@ -58,6 +58,12 @@ public class SaleChanceController {
 		return "saleChance_manager";
 	}
 	
+	@RequestMapping("/findById")
+	@ResponseBody
+	public ServerResponse findById(Integer id) {
+		return saleChanceService.findById(id);
+	}
+	
 	@RequestMapping("/findAll")
 	@ResponseBody
 	public EasyUIDataGrideResult findAll(Integer page, Integer rows, SaleChance saleChance, Date startTime, Date endTime) {

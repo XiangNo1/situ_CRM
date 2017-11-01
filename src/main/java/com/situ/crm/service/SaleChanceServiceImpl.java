@@ -125,6 +125,15 @@ public class SaleChanceServiceImpl implements ISaleChanceService{
 		return ServerResponse.createSuccess("添加数据成功！");
 	}
 
+	@Override
+	public ServerResponse findById(Integer id) {
+		SaleChance saleChance = saleChanceMapper.selectByPrimaryKey(id);
+		if (saleChance != null) {
+			return ServerResponse.createSuccess("查找成功! ", saleChance);
+		}
+		return ServerResponse.createError("查找失败!");
+	}
+
 
 
 }

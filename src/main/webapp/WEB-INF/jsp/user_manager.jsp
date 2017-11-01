@@ -191,7 +191,7 @@ function doDelete() {
 	<!-- toolbar 结束 -->
 	
 	<!-- 添加和修改的dialog 开始 -->
-	<div id="dialog" class="easyui-dialog" closed="true" modal="true";
+	<div id="dialog" class="easyui-dialog" closed="true" modal="true"
 		style="width:650;height:280,padding: 10px 20px" buttons="#dialog-button">
 		<form action="" id="form" method="post">
 			<input type="hidden" id="id" name="id"/>

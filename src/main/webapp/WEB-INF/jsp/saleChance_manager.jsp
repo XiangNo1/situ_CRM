@@ -212,7 +212,7 @@ function doDelete() {
 	<div id="cc" class="easyui-calendar"></div>
 	
 	<!-- 添加和修改的dialog 开始 -->
-	<div id="dialog" style="width:650;height:280,padding: 10px 20px">
+	<div id="dialog" style="width:650;height:280,padding: 10px 20px"  modal="true" closed="true">
 		<form action="" id="form" method="post">
 			<input type="hidden" id="id" name="id"/>
 			<table cellspacing="8px">

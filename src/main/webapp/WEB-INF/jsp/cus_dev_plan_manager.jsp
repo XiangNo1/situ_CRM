@@ -192,7 +192,15 @@ function doDelete() {
 	    }
 	}); 
 }
-
+//可以修改添加开发项
+function openCusDevPlanTab(id){
+	 window.parent.openTab('客户开发计划项管理','${ctx}/cusDevPlan/index.action?saleChanceId='+id,'icon-khkfjh');
+}
+ 
+//只能查看开发信息
+function openCusDevPlanInfoTab(id){
+	window.parent.openTab('查看客户开发计划项','${ctx}/cusDevPlan/index.action?saleChanceId='+id+'&show=true','icon-khkfjh');
+}
 </script>
 
 </head>
@@ -223,7 +231,7 @@ function doDelete() {
 	<div id="cc" class="easyui-calendar"></div>
 	
 	<!-- 添加和修改的dialog 开始 -->
-	<div id="dialog" style="width:650;height:280,padding: 10px 20px">
+	<div id="dialog" style="width:650;height:280,padding: 10px 20px" modal="true" closed="true">
 		<form action="" id="form" method="post">
 			<input type="hidden" id="id" name="id"/>
 			<table cellspacing="8px">
@@ -265,7 +273,7 @@ function doDelete() {
 		   		</tr>
 		   		<tr>
 		   			<td>指派给：</td>
-		   			<td><input class="easyui-combobox" id="assignMan" name="assignMan" data-options="panelHeight:'auto',editable:false,valueField:'trueName',textField:'trueName',url:'${ctx}/user/getCustomerManagerList.action'"/></td>
+		   			<td><input class="easyui-combobox" id="assignMan" name="assignMan" data-options="panelHeight:'auto',valueField:'trueName',textField:'trueName',url:'${ctx}/user/getCustomerManagerList.action'"/></td>
 		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 		   			<td>指派时间：</td>
 		   			<td><input type="text" id="assignTime" name="assignTime" readonly="readonly"/></td>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.situ.crm.common.EasyUIDataGrideResult;
 import com.situ.crm.common.ServerResponse;
+import com.situ.crm.pojo.CusDevPlan;
 import com.situ.crm.pojo.SaleChance;
 
 public interface ICusDevPlanService {
@@ -22,6 +23,14 @@ public interface ICusDevPlanService {
 	ServerResponse addSaleChance(SaleChance saleChance);
 
 	ServerResponse updateSaleChance(SaleChance saleChance);
+
+	List<CusDevPlan> findAllItem(Integer saleChanceId);
+
+	ServerResponse add(CusDevPlan cusDevPlan);
+
+	ServerResponse update(CusDevPlan cusDevPlan);
+
+	ServerResponse deleteById(Integer id);
 
 
 }
