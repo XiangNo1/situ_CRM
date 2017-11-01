@@ -7,7 +7,7 @@ import com.situ.crm.common.EasyUIDataGrideResult;
 import com.situ.crm.common.ServerResponse;
 import com.situ.crm.pojo.SaleChance;
 
-public interface ISaleChanceService {
+public interface ICusDevPlanService {
 	/**
 	 * 返回所有数据
 	 * @param rows 

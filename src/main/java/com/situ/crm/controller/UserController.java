@@ -18,6 +18,12 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
+	@RequestMapping("/getCustomerManagerList")
+	@ResponseBody
+	public List<User> getCustomerManagerList() {
+		return userService.getCustomerManagerList();
+	}
+	
 	@RequestMapping(value="/findRoleName")
 	@ResponseBody
 	public List<User> findRoleName(){

@@ -10,7 +10,7 @@
 $(function(){
 	/*展示数据的datagrid表格*/
 	$("#datagrid").datagrid({
-		url:'${ctx}/saleChance/findAll.action',
+		url:'${ctx}/cusDevPlan/findAll.action',
 		method:'get',
 		fit:true,
 		singleSelect:false,
@@ -19,22 +19,35 @@ $(function(){
 		fitColumns:true,
 		pagination:true,
 		columns:[[    
-		     {field:'cb',checkbox:true,align:'center'},    
-		     {field:'id',title:'编号',width:80,align:'center'},    
-		     {field:'customerName',title:'客户名称',width:100,align:'center'},    
-		     {field:'overview',title:'概要',width:80,align:'center'},    
-		     {field:'linkMan',title:'联系人',width:80,align:'center'},    
-		     {field:'linkPhone',title:'联系电话',width:100,align:'center'},    
-		     {field:'createMan',title:'创建人',width:100,align:'center'},    
-		     {field:'createTime',title:'创建时间',width:100,align:'center'},    
-		     {field:'status',title:'状态',width:100,align:'center',formatter:function(value,row,index){
-		    	 if(value==1){
-		    		 return "已分配";
-		    	 }else{
-		    		 return "未分配";
-		    	 }
-		     }}    
-		]]  
+				     {field:'cb',checkbox:true,align:'center'},    
+				     {field:'id',title:'编号',width:50,align:'center'},    
+				     {field:'customerName',title:'客户名称',width:100,align:'center'},    
+				     {field:'overview',title:'概要',width:80,align:'center'},    
+				     {field:'linkMan',title:'联系人',width:80,align:'center'},    
+				     {field:'createMan',title:'创建人',width:80,align:'center'},    
+				     {field:'createTime',title:'创建时间',width:100,align:'center'},    
+				     {field:'assignMan',title:'指派人',width:80,align:'center'},    
+				     {field:'assignTime',title:'指派时间',width:100,align:'center'},    
+				     {field:'devResult',title:'客户开发状态',width:80,align:'center',formatter:function(value,row,index){
+				    	 //客户开发状态 0 未开发 1 开发中 2 开发成功 3 开发失败
+				    	 if(value==0){
+				    		 return "未开发";
+				    	 }else if(value==1){
+				    		 return "开发中";
+				    	 }else if(value==2){
+				    		 return "开发成功";
+				    	 }else if(value==3){
+				    		 return "开发失败";
+				    	 }
+				     }},    
+				     {field:'a',title:'操作',width:80,align:'center',formatter:function(value,row,index){
+				    	 if(row.devResult==0||row.devResult==1){
+				    		 return "<a href='javascript:openCusDevPlanTab("+row.id+")'>开发</a>";
+				    	 }else{
+				    		 return "<a href='javascript:openCusDevPlanInfoTab("+row.id+")'>查看详细信息</a>";
+				    	 }
+				     }},    
+				]]   
 	});
 	/*添加和修改弹出的dialog */
 	$("#dialog").dialog({
@@ -136,8 +149,8 @@ function doSave(){
 function doSearch(){
 	$("#datagrid").datagrid("load",{
 		'customerName' : $("#customerNameSearch").val(),
-		'createMan' : $("#createManSearch").val(),
-		'status' : $("#statusSearch").val(),
+		'assignMan' : $("#assignManSearch").val(),
+		'devResult' : $("#devResultSearch").val(),
 		'startTime':$("#startTime").val(),
 		'endTime':$("#endTime").val()
 	})
@@ -188,17 +201,15 @@ function doDelete() {
 	
 	<!-- toolbar 开始 -->
 	<div id="toolbar">
-		<a class="easyui-linkbutton" href="javascript:openAddDialog()" iconCls="icon-add">添加</a>
-		<a class="easyui-linkbutton" href="javascript:openUpdateDialog()" iconCls="icon-edit">修改</a>
-		<a class="easyui-linkbutton" href="javascript:doDelete()" iconCls="icon-remove">删除</a>
-		&nbsp;&nbsp;&nbsp;&nbsp;
 		<div>
 		      客户名称：<input style="width: 100px;" type="text" id="customerNameSearch"></input>
-		       创建人：<input style="width: 100px;" type="text" id="createManSearch"></input>
-		       分配状态：<select style="width: 100px;" editable="false" panelHeight='auto' id="statusSearch" class="easyui-combobox" >
+		       指派人：<input style="width: 100px;" type="text" id="assignManSearch"></input>
+		       开发状态：<select style="width: 100px;" editable="false" panelHeight='auto' id="devResultSearch" class="easyui-combobox" >
 		       		<option value="">请选择</option>
-					<option value="1">已分配</option>
-					<option value="0">未分配</option>
+					<option value="0">未开发</option>
+					<option value="1">开发中</option>
+					<option value="2">开发成功</option>
+					<option value="3">开发失败</option>
 				</select>
 			创建时间范围：
 				<input id="startTime" name="startTime" class="easyui-datebox" data-options="sharedCalendar:'#cc'">

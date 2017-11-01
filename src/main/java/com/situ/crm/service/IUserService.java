@@ -31,4 +31,6 @@ public interface IUserService {
 	ServerResponse updateUserByName(User user);
 
 	User login2(String name, String password);
+
+	List<User> getCustomerManagerList();
 }

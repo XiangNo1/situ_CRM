@@ -19,7 +19,7 @@ import com.situ.crm.pojo.SaleChanceExample.Criteria;
 import com.situ.crm.util.Util;
 
 @Service
-public class SaleChanceServiceImpl implements ISaleChanceService{
+public class CusDevPlanServiceImpl implements ICusDevPlanService{
 	@Autowired
 	private SaleChanceMapper saleChanceMapper;
 
@@ -31,17 +31,10 @@ public class SaleChanceServiceImpl implements ISaleChanceService{
 		PageHelper.startPage(page, rows);
 		//rows(分页之后的数据)
 		Criteria createCriteria = saleChanceExample.createCriteria();
+		createCriteria.andStatusEqualTo(1);
 		if (StringUtils.isNotEmpty(saleChance.getCustomerName())) {
 			try {
 				createCriteria.andCustomerNameLike(Util.formatLike(new String(saleChance.getCustomerName().getBytes("iso-8859-1"),"utf-8")));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if (StringUtils.isNotEmpty(saleChance.getCreateMan())) {
-			try {
-				createCriteria.andCreateManLike(Util.formatLike(new String(saleChance.getCreateMan().getBytes("iso-8859-1"),"utf-8")));
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -54,9 +47,6 @@ public class SaleChanceServiceImpl implements ISaleChanceService{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		if (null != saleChance.getStatus()) {
-				createCriteria.andStatusEqualTo(saleChance.getStatus());
 		}
 		if (null != saleChance.getDevResult()) {
 			createCriteria.andDevResultEqualTo(saleChance.getDevResult());

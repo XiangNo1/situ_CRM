@@ -173,8 +173,7 @@ function doDelete() {
 					 	url:'${ctx}/dataDic/findDataDicName.action',
 					 	valueField: 'dataDicName',
 					 	textField: 'dataDicName',
-					 	panelHeight:'auto',
-					 	editable:false  "/>
+					 	panelHeight:'auto' "/>
 		       数据字典值：<input type="text" id="dataDicValueSearch"></input>
 		  <a href="javascript:doSearch();" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
 		</div>

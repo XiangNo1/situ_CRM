@@ -183,8 +183,8 @@ function doDelete() {
 					 	url:'${ctx}/user/findRoleName.action',
 					 	valueField: 'roleName',
 					 	textField: 'roleName',
-					 	panelHeight:'auto',
-					 	editable:false  "/>
+					 	panelHeight:'auto'
+					 	 "/>
 		  <a href="javascript:doSearch();" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
 		</div>
 	</div>
