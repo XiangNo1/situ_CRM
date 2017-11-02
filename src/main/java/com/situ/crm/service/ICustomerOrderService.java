@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.situ.crm.common.ServerResponse;
 import com.situ.crm.pojo.CustomerOrder;
+import com.situ.crm.pojo.OrderItem;
 
 public interface ICustomerOrderService {
 	/**
@@ -23,6 +24,8 @@ public interface ICustomerOrderService {
 	ServerResponse update(CustomerOrder customerOrder);
 
 	ServerResponse deleteById(Integer id);
+
+	List<OrderItem> findById(Integer id);
 
 
 

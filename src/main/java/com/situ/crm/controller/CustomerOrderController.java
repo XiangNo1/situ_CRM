@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.situ.crm.common.ServerResponse;
 import com.situ.crm.pojo.CustomerOrder;
+import com.situ.crm.pojo.OrderItem;
 import com.situ.crm.service.ICustomerOrderService;
 
 @Controller
@@ -28,6 +29,12 @@ public class CustomerOrderController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(
                 new SimpleDateFormat("yyyy-MM-dd"), true));
     }
+	
+	@RequestMapping(value="/findItemById")
+	@ResponseBody
+	public List<OrderItem> findItemById(Integer orderId){
+		return customerOrderService.findById(orderId);
+	}
 	
 	@RequestMapping(value="/index")
 	public String index(){

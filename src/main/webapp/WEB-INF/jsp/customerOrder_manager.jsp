@@ -46,7 +46,25 @@ $(function(){
 			]]
 		});
 	});
-	
+/* 打开修改dialog */
+function openOrderInfoTab(id) {
+	$("#dialog").dialog("open").dialog("setTitle","查看订单明细");
+	$.ajax({
+        url:"${ctx}/customerOrder/findItemById.action",
+        type: "POST",
+        /* data的类型是json字符串 */
+        data:"orderId="+id,
+        dataType:"json",
+        success: function(data) {
+        	$('#productName').val(data.productName);
+        	$('#productNum').val(data.productNum);
+        	$('#unit').val(data.unit);
+        	$('#price').val(data.price);
+        	$('#sum').val(data.sum);
+        }
+    });
+}	
+
 </script>
 </head>
 <body>
@@ -81,7 +99,35 @@ $(function(){
 	<!-- toolbar 结束 -->
 	
 	
-
+<!-- 添加和修改的dialog 开始 -->
+	<div id="dialog" class="easyui-dialog" closed="true" modal="true"
+		style="width:650;height:280,padding: 10px 20px" buttons="#dialog-button">
+		<form action="" id="form" method="post">
+			<input type="hidden" id="id" name="id"/>
+			<table cellspacing="8px">
+				<tr>
+					<td>商品名称：</td>
+					<td><input type="text" id="productName" name="productName" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+					<td>&nbsp;</td>
+					<td>商品数量：</td>
+					<td><input type="text" id="productNum" name="productNum" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+				</tr>
+				<tr>
+					<td>单位：</td>
+					<td><input type="text" id="unit" name="unit" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+					<td>&nbsp;</td>
+					<td>价格：</td>
+					<td><input type="text" id="price" name="price" class="easyui-validatebox" required="true" validType="email"/><font color="red">*</font></td>
+				</tr>
+				<tr>
+					<td>总金额：</td>
+					<td><input type="text" id="sum" name="sum" class="easyui-validatebox" required="true"/><font color="red">*</font></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<!-- 添加和修改的dialog 结束 -->
+		
 
 </body>
 </html>

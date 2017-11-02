@@ -13,9 +13,12 @@ import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrideResult;
 import com.situ.crm.common.ServerResponse;
 import com.situ.crm.dao.CustomerOrderMapper;
+import com.situ.crm.dao.OrderItemMapper;
 import com.situ.crm.dao.SaleChanceMapper;
 import com.situ.crm.pojo.CustomerOrder;
 import com.situ.crm.pojo.CustomerOrderExample;
+import com.situ.crm.pojo.OrderItem;
+import com.situ.crm.pojo.OrderItemExample;
 import com.situ.crm.pojo.CustomerOrder;
 import com.situ.crm.pojo.CustomerOrderExample;
 import com.situ.crm.pojo.SaleChance;
@@ -29,7 +32,9 @@ public class CustomerOrderServiceImpl implements ICustomerOrderService{
 	private SaleChanceMapper saleChanceMapper;
 	@Autowired
 	private CustomerOrderMapper customerOrderMapper;
-
+	@Autowired
+	private OrderItemMapper orderItemMapper;
+	
 	@Override
 	public ServerResponse delete(String ids) {
 		try {
@@ -78,6 +83,16 @@ public class CustomerOrderServiceImpl implements ICustomerOrderService{
 		com.situ.crm.pojo.CustomerOrderExample.Criteria criteria = customerOrderExample.createCriteria();
 		criteria.andCustomerIdEqualTo(id);
 		return customerOrderMapper.selectByExample(customerOrderExample);
+	}
+
+
+	@Override
+	public List<OrderItem> findById(Integer id) {
+		// TODO Auto-generated method stub
+		OrderItemExample orderItemExample = new OrderItemExample();
+		com.situ.crm.pojo.OrderItemExample.Criteria criteria = orderItemExample.createCriteria();
+		criteria.andOrderIdEqualTo(id);
+		return orderItemMapper.selectByExample(orderItemExample);
 	}
 
 
