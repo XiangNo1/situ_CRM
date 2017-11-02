@@ -10,7 +10,7 @@
 $(function(){
 	/*展示数据的datagrid表格*/
 	$("#datagrid").datagrid({
-		url:'${ctx}/user/findAll.action',
+		url:'${ctx}/customerLoss/findAll.action',
 		method:'get',
 		fit:true,
 		singleSelect:false,
@@ -21,12 +21,25 @@ $(function(){
 		columns:[[    
 		     {field:'cb',checkbox:true,align:'center'},    
 		     {field:'id',title:'编号',width:80,align:'center'},    
-		     {field:'name',title:'用户名',width:100,align:'center'},    
-		     {field:'password',title:'密码',width:80,align:'center'},    
-		     {field:'trueName',title:'真实姓名',width:80,align:'center'},    
-		     {field:'email',title:'邮件',width:100,align:'center'},    
-		     {field:'phone',title:'联系电话',width:100,align:'center'},    
-		     {field:'roleName',title:'角色',width:100,align:'center'}    
+		     {field:'customerName',title:'客户名称',width:100,align:'center'},    
+		     {field:'customerManager',title:'客户经理',width:80,align:'center'},    
+		     {field:'lastOrderTime',title:'上次下单日期',width:80,align:'center'},    
+		     {field:'confirmLossTime',title:'确认流失日期',width:100,align:'center'},    
+		     {field:'status',title:'客户状态',width:100,align:'center',formatter:function(value,row,index){
+		    	 if(value==1){
+		    		 return "确认流失";
+		    	 }else{
+		    		 return "暂缓流失";
+		    	 }
+		     }},
+		     {field:'lossReason',title:'流失原因',width:100,align:'center'},
+		     {field:'a',title:'操作',width:80,align:'center',formatter:function(value,row,index){
+		    	 if(row.status==0){
+		    		 return "<a href='javascript:openCusDevPlanTab("+row.id+")'>暂缓流失</a>";
+		    	 }else{
+		    		 return "<span>客户确认流失</span>";
+		    	 }
+		     }}
 		]]  
 	});
 	/*添加和修改弹出的dialog */
@@ -58,7 +71,7 @@ var url;
 /* 打开添加dialog */
 function openAddDialog() {
 	$("#dialog").dialog("open").dialog("setTitle","添加信息");
-	url = "${ctx}/user/addUser.action";
+	url = "${ctx}/customerLoss/addCustomerLoss.action";
 	$('#form').form("clear");
 	
 }
@@ -71,7 +84,7 @@ function openUpdateDialog() {
 	}
 	var row = selections[0];
 	$("#dialog").dialog("open").dialog("setTitle","修改信息");
-	url = "${ctx}/user/updateUser.action";
+	url = "${ctx}/customerLoss/updateCustomerLoss.action";
 	$('#form').form("load", row);
 }
 
@@ -120,9 +133,9 @@ function doSave(){
 
 function doSearch(){
 	$("#datagrid").datagrid("load",{
-		'name' : $("#nameSearch").val(),
-		'trueName' : $("#trueNameSearch").val(),
-		'roleName' : $("#roleNameSearch").val()
+		'customerName' : $("#customerNameSearch").val(),
+		'customerManager' : $("#customerManagerSearch").val(),
+		'status' : $("#statusSearch").val()
 	})
 };
 
@@ -137,7 +150,7 @@ function doDelete() {
 	$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
 	    if (r){    
 	    	$.post(
-					"${ctx}/user/delete.action",
+					"${ctx}/customerLoss/delete.action",
 					{ids:ids}, 
 					function(data) {
 						$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
@@ -171,20 +184,14 @@ function doDelete() {
 	
 	<!-- toolbar 开始 -->
 	<div id="toolbar">
-		<a class="easyui-linkbutton" href="javascript:openAddDialog()" iconCls="icon-add">添加</a>
-		<a class="easyui-linkbutton" href="javascript:openUpdateDialog()" iconCls="icon-edit">修改</a>
-		<a class="easyui-linkbutton" href="javascript:doDelete()" iconCls="icon-remove">删除</a>
-		&nbsp;&nbsp;&nbsp;&nbsp;
 		<div>
-		      用户名：<input type="text" id="nameSearch"></input>
-		       真实姓名：<input type="text" id="trueNameSearch"></input>
-		       角色：<input type="text" id="roleNameSearch" class="easyui-combobox"
-					 data-options="
-					 	url:'${ctx}/user/findRoleName.action',
-					 	valueField: 'roleName',
-					 	textField: 'roleName',
-					 	panelHeight:'auto'
-					 	 "/>
+		      客户名称：<input type="text" id="customerNameSearch"></input>
+		      客户经理：<input type="text" id="customerManagerSearch"></input>
+		      客户状态：<select style="width: 100px;" editable="false" panelHeight='auto' id="statusSearch" class="easyui-combobox" >
+		       		<option value="">请选择</option>
+					<option value="1">确认流失</option>
+					<option value="0">暂缓流失</option>
+				</select>
 		  <a href="javascript:doSearch();" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
 		</div>
 	</div>

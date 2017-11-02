@@ -25,5 +25,7 @@ public interface ISaleChanceService {
 
 	ServerResponse findById(Integer id);
 
+	ServerResponse updateDevResult(Integer saleChanceId, Integer devResult);
+
 
 }

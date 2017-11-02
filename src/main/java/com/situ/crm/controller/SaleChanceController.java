@@ -28,6 +28,11 @@ public class SaleChanceController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(
                 new SimpleDateFormat("yyyy-MM-dd"), true));
     }
+	@RequestMapping(value="/updateDevResult")
+	@ResponseBody
+	public ServerResponse updateDevResult(Integer saleChanceId, Integer devResult){
+		return saleChanceService.updateDevResult(saleChanceId, devResult);
+	}
 	
 	@RequestMapping(value="/cusDevPlan")
 	public String cusDevPlan(){

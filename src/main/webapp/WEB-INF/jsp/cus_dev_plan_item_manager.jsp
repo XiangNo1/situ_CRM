@@ -6,32 +6,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="${ctx}/resources/thirdlib/jquery-easyui/jquery.edatagrid.js"></script>
 <script type="text/javascript">
-	$(function(){
-		//查询指定id的销售机会
-		$.post("${ctx}/saleChance/findById.action", 
-				{id : '${param.saleChanceId}'}, 
-				function(result) {
-					if(result.status==Util.SUCCESS) {
-						$("#customerName").val(result.data.customerName);
-						$("#chanceSource").val(result.data.chanceSource);
-						$("#linkMan").val(result.data.linkMan);
-						$("#linkPhone").val(result.data.linkPhone);
-						$("#successRate").val(result.data.successRate);
-						$("#overview").val(result.data.overview);
-						$("#description").val(result.data.description);
-						$("#createMan").val(result.data.createMan);
-						$("#createTime").val(result.data.createTime);
-						$("#assignMan").val(result.data.assignMan);
-						$("#assignTime").val(result.data.assignTime);
-					}
-					
-				}, 
-				"json");
-		
+$(function(){
+	//查询指定id的销售机会
+	$.post("${ctx}/saleChance/findById.action", 
+			{id : '${param.saleChanceId}'}, 
+			function(result) {
+				if(result.status==Util.SUCCESS) {
+					$("#customerName").val(result.data.customerName);
+					$("#chanceSource").val(result.data.chanceSource);
+					$("#linkMan").val(result.data.linkMan);
+					$("#linkPhone").val(result.data.linkPhone);
+					$("#successRate").val(result.data.successRate);
+					$("#overview").val(result.data.overview);
+					$("#description").val(result.data.description);
+					$("#createMan").val(result.data.createMan);
+					$("#createTime").val(result.data.createTime);
+					$("#assignMan").val(result.data.assignMan);
+					$("#assignTime").val(result.data.assignTime);
+				}
+				
+			}, 
+			"json");
+	
 		/*展示数据的datagrid表格*/
-		$("#datagrid").datagrid({
+		$("#datagrid").edatagrid({
 			url:'${ctx}/cusDevPlan/findAllItem.action?saleChanceId=${param.saleChanceId}',//只查询已分配咨询师的
 			saveUrl:'${ctx}/cusDevPlan/add.action?saleChanceId=${param.saleChanceId}',
 			updateUrl:'${ctx}/cusDevPlan/update.action?saleChanceId=${param.saleChanceId}',
@@ -67,7 +66,7 @@
 </head>
 <body>
 	<!-- 营销机会信息面板  开始 -->
-	<div id="p" class="easyui-panel" title="销售机会信息" style="width: 700px;height: 400px;padding: 10px">
+	<div id="p" class="easyui-panel" title="销售机会信息" style="width: 700px;height: 320px">
 	 	<table cellspacing="8px">
 	   		<tr>
 	   			<td>客户名称：</td>
@@ -117,6 +116,8 @@
 	   	</table>
 	 </div>
 	 <!-- 营销机会信息面板  结束  -->
+	 
+	 <br/>
 	 
 	<!-- 客户开发计划项table -->
 	<table id="datagrid" style="width:700px;height:250px"></table>

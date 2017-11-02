@@ -12,31 +12,6 @@
  * 
  */
 (function($){
-	var currTarget;
-	$(function(){
-		$(document).unbind('.edatagrid').bind('mousedown.edatagrid', function(e){
-			var p = $(e.target).closest('div.datagrid-view,div.combo-panel');
-			if (p.length){
-				if (p.hasClass('datagrid-view')){
-					var dg = p.children('table');
-					if (dg.length && currTarget != dg[0]){
-						_save();
-					}
-				}
-				return;
-			}
-			_save();
-			
-			function _save(){
-				var dg = $(currTarget);
-				if (dg.length){
-					dg.edatagrid('saveRow');
-					currTarget = undefined;
-				}
-			}
-		});
-	});
-	
 	function buildGrid(target){
 		var opts = $.data(target, 'edatagrid').options;
 		$(target).datagrid($.extend({}, opts, {
@@ -53,17 +28,10 @@
 				}
 			},
 			onAfterEdit: function(index, row){
-				opts.editIndex = -1;
+				opts.editIndex = undefined;
 				var url = row.isNewRecord ? opts.saveUrl : opts.updateUrl;
 				if (url){
 					$.post(url, row, function(data){
-						if (data.isError){
-							$(target).edatagrid('cancelRow',index);
-							$(target).edatagrid('selectRow',index);
-							$(target).edatagrid('editRow',index);
-							opts.onError.call(target, index, data);
-							return;
-						}
 						data.isNewRecord = null;
 						$(target).datagrid('updateRow', {
 							index: index,
@@ -92,7 +60,7 @@
 				if (opts.onAfterEdit) opts.onAfterEdit.call(target, index, row);
 			},
 			onCancelEdit: function(index, row){
-				opts.editIndex = -1;
+				opts.editIndex = undefined;
 				if (row.isNewRecord) {
 					$(this).datagrid('deleteRow', index);
 				}
@@ -100,15 +68,13 @@
 			},
 			onBeforeLoad: function(param){
 				if (opts.onBeforeLoad.call(target, param) == false){return false}
-//				$(this).datagrid('rejectChanges');
-				$(this).edatagrid('cancelRow');
+				$(this).datagrid('rejectChanges');
 				if (opts.tree){
 					var node = $(opts.tree).tree('getSelected');
 					param[opts.treeParentField] = node ? node.id : undefined;
 				}
 			}
 		}));
-		
 		
 		function focusEditor(field){
 			var editor = $(target).datagrid('getEditor', {index:opts.editIndex,field:field});
@@ -212,15 +178,6 @@
 						dg.datagrid('endEdit', editIndex);
 						dg.datagrid('beginEdit', index);
 						opts.editIndex = index;
-						
-						if (currTarget != this && $(currTarget).length){
-							$(currTarget).edatagrid('saveRow');
-							currTarget = undefined;
-						}
-						if (opts.autoSave){
-							currTarget = this;
-						}
-						
 						var rows = dg.datagrid('getRows');
 						opts.onEdit.call(this, index, rows[index]);
 					} else {
@@ -231,7 +188,7 @@
 				}
 			});
 		},
-		addRow: function(jq, index){
+		addRow: function(jq){
 			return jq.each(function(){
 				var dg = $(this);
 				var opts = $.data(this, 'edatagrid').options;
@@ -248,34 +205,9 @@
 					}
 					dg.datagrid('endEdit', opts.editIndex);
 				}
+				dg.datagrid('appendRow', {isNewRecord:true});
 				var rows = dg.datagrid('getRows');
-				
-				function _add(index, row){
-					if (index == undefined){
-						dg.datagrid('appendRow', row);
-						opts.editIndex = rows.length - 1;
-					} else {
-						dg.datagrid('insertRow', {index:index,row:row});
-						opts.editIndex = index;
-					}
-				}
-				if (typeof index == 'object'){
-					_add(index.index, $.extend(index.row, {isNewRecord:true}))
-				} else {
-					_add(index, {isNewRecord:true});
-				}
-				
-//				if (index == undefined){
-//					dg.datagrid('appendRow', {isNewRecord:true});
-//					opts.editIndex = rows.length - 1;
-//				} else {
-//					dg.datagrid('insertRow', {
-//						index: index,
-//						row: {isNewRecord:true}
-//					});
-//					opts.editIndex = index;
-//				}
-				
+				opts.editIndex = rows.length - 1;
 				dg.datagrid('beginEdit', opts.editIndex);
 				dg.datagrid('selectRow', opts.editIndex);
 				
@@ -291,95 +223,63 @@
 			return jq.each(function(){
 				var dg = $(this);
 				var opts = $.data(this, 'edatagrid').options;
-				if (opts.editIndex >= 0){
-					if (opts.onBeforeSave.call(this, opts.editIndex) == false) {
-						setTimeout(function(){
-							dg.datagrid('selectRow', opts.editIndex);
-						},0);
-						return;
-					}
-					$(this).datagrid('endEdit', opts.editIndex);
+				if (opts.onBeforeSave.call(this, opts.editIndex) == false) {
+					setTimeout(function(){
+						dg.datagrid('selectRow', opts.editIndex);
+					},0);
+					return;
 				}
+				$(this).datagrid('endEdit', opts.editIndex);
 			});
 		},
 		cancelRow: function(jq){
 			return jq.each(function(){
-				var opts = $.data(this, 'edatagrid').options;
-				if (opts.editIndex >= 0){
-					$(this).datagrid('cancelEdit', opts.editIndex);
-				}
+				var index = $(this).edatagrid('options').editIndex;
+				$(this).datagrid('cancelEdit', index);
 			});
 		},
-		destroyRow: function(jq, index){
+		destroyRow: function(jq){
 			return jq.each(function(){
 				var dg = $(this);
 				var opts = $.data(this, 'edatagrid').options;
-				
-				var rows = [];
-				if (index == undefined){
-					rows = dg.datagrid('getSelections');
-				} else {
-					var rowIndexes = $.isArray(index) ? index : [index];
-					for(var i=0; i<rowIndexes.length; i++){
-						var row = opts.finder.getRow(this, rowIndexes[i]);
-						if (row){
-							rows.push(row);
-						}
-					}
-				}
-				
-				if (!rows.length){
+				var row = dg.datagrid('getSelected');
+				if (!row){
 					$.messager.show({
 						title: opts.destroyMsg.norecord.title,
 						msg: opts.destroyMsg.norecord.msg
 					});
 					return;
 				}
-				
 				$.messager.confirm(opts.destroyMsg.confirm.title,opts.destroyMsg.confirm.msg,function(r){
 					if (r){
-						for(var i=0; i<rows.length; i++){
-							_del(rows[i]);
+						var index = dg.datagrid('getRowIndex', row);
+						if (row.isNewRecord){
+							dg.datagrid('cancelEdit', index);
+						} else {
+							if (opts.destroyUrl){
+								var idValue = row[opts.idField||'id'];
+								$.post(opts.destroyUrl, {id:idValue}, function(){
+									if (opts.tree){
+										dg.datagrid('reload');
+										var t = $(opts.tree);
+										var node = t.tree('find', idValue);
+										if (node){
+											t.tree('remove', node.target);
+										}
+									} else {
+										dg.datagrid('cancelEdit', index);
+										dg.datagrid('deleteRow', index);
+									}
+									opts.onDestroy.call(dg[0], index, row);
+								});
+							} else {
+								dg.datagrid('cancelEdit', index);
+								dg.datagrid('deleteRow', index);
+								opts.onDestroy.call(dg[0], index, row);
+							}
 						}
-						dg.datagrid('clearSelections');
 					}
 				});
-				
-				function _del(row){
-					var index = dg.datagrid('getRowIndex', row);
-					if (index == -1){return}
-					if (row.isNewRecord){
-						dg.datagrid('cancelEdit', index);
-					} else {
-						if (opts.destroyUrl){
-							var idValue = row[opts.idField||'id'];
-							$.post(opts.destroyUrl, {id:idValue}, function(data){
-								var index = dg.datagrid('getRowIndex', idValue);
-								if (data.isError){
-									dg.datagrid('selectRow', index);
-									opts.onError.call(dg[0], index, data);
-									return;
-								}
-								if (opts.tree){
-									dg.datagrid('reload');
-									var t = $(opts.tree);
-									var node = t.tree('find', idValue);
-									if (node){
-										t.tree('remove', node.target);
-									}
-								} else {
-									dg.datagrid('cancelEdit', index);
-									dg.datagrid('deleteRow', index);
-								}
-								opts.onDestroy.call(dg[0], index, row);
-							}, 'json');
-						} else {
-							dg.datagrid('cancelEdit', index);
-							dg.datagrid('deleteRow', index);
-							opts.onDestroy.call(dg[0], index, row);
-						}
-					}
-				}
 			});
 		}
 	};
@@ -389,18 +289,17 @@
 		editIndex: -1,
 		destroyMsg:{
 			norecord:{
-				title:'Warning',
-				msg:'No record is selected.'
+				title:'警告',
+				msg:'没有记录被选中!'
 			},
 			confirm:{
-				title:'Confirm',
-				msg:'Are you sure you want to delete?'
+				title:'系统提示',
+				msg:'您确定要删除这条记录吗?'
 			}
 		},
 //		destroyConfirmTitle: 'Confirm',
 //		destroyConfirmMsg: 'Are you sure you want to delete?',
 		
-		autoSave: false,	// auto save the editing row when click out of datagrid
 		url: null,	// return the datagrid data
 		saveUrl: null,	// return the added row
 		updateUrl: null,	// return the updated row
@@ -416,7 +315,6 @@
 		onEdit: function(index, row){},
 		onBeforeSave: function(index){},
 		onSave: function(index, row){},
-		onDestroy: function(index, row){},
-		onError: function(index, row){}
+		onDestroy: function(index, row){}
 	});
 })(jQuery);
