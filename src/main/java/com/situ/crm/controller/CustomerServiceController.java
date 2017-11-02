@@ -1,9 +1,14 @@
 package com.situ.crm.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,6 +23,12 @@ public class CustomerServiceController {
 	@Autowired
 	private ICustomerServiceService customerServiceService;
 
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(
+                new SimpleDateFormat("yyyy-MM-dd"), true));
+    }
+	
 	@RequestMapping(value="/findRoleName")
 	@ResponseBody
 	public List<CustomerService> findRoleName(){

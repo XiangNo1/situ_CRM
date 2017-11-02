@@ -216,14 +216,15 @@ function doDelete() {
 					<td>&nbsp;</td>
 					<td>用户角色：</td>
 					<td>
-						<select class="easyui-combobox" id="roleName" name="roleName" editable="false" style="width:175">
+						<select class="easyui-combobox" id="roleName" panelHeight='auto' name="roleName" editable="false">
 							<option value=""></option>
 							<option value="系统管理员">系统管理员</option>
 							<option value="销售主管">销售主管</option>
 							<option value="客户经理">客户经理</option>
 							<option value="高管">高管</option>
 						</select>
-						<font color="red">*</font></td>
+						<font color="red">*</font>
+					</td>
 				</tr>
 			</table>
 		</form>
