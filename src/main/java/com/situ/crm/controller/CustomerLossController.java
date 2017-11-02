@@ -29,6 +29,12 @@ public class CustomerLossController {
                 new SimpleDateFormat("yyyy-MM-dd"), true));
     }
 	
+	@RequestMapping(value="/findById")
+	@ResponseBody
+	public CustomerLoss findById(Integer id){
+		return customerLossService.findById(id);
+	}
+	
 	@RequestMapping(value="/updateCustomerLoss")
 	@ResponseBody
 	public ServerResponse updateCustomerLoss(CustomerLoss customerLoss){

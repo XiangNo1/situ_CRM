@@ -98,6 +98,12 @@ public class CustomerLossServiceImpl implements ICustomerLossService{
 		return ServerResponse.createSuccess("添加数据成功！");
 	}
 
+	@Override
+	public CustomerLoss findById(Integer id) {
+		// TODO Auto-generated method stub
+		return customerLossMapper.selectByPrimaryKey(id);
+	}
+
 
 
 }

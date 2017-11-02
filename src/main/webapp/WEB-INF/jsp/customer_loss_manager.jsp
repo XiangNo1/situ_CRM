@@ -35,7 +35,7 @@ $(function(){
 		     {field:'lossReason',title:'流失原因',width:100,align:'center'},
 		     {field:'a',title:'操作',width:80,align:'center',formatter:function(value,row,index){
 		    	 if(row.status==0){
-		    		 return "<a href='javascript:openCusDevPlanTab("+row.id+")'>暂缓流失</a>";
+		    		 return "<a href='javascript:openCustomerLossTab("+row.id+")'>暂缓流失</a>";
 		    	 }else{
 		    		 return "<span>客户确认流失</span>";
 		    	 }
@@ -176,6 +176,11 @@ function doDelete() {
 	}); 
 }
 
+
+//可以修改添加开发项
+function openCustomerLossTab(id){
+	 window.parent.openTab('客户流失暂缓措施管理','${ctx}/customerLossMeasure/index.action?id='+id,'icon-khlsgl');
+}
 </script>
 
 </head>

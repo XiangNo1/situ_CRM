@@ -22,4 +22,6 @@ public interface ICustomerLossService {
 
 	ServerResponse updateCustomerLoss(CustomerLoss customerLoss);
 
+	CustomerLoss findById(Integer id);
+
 }
