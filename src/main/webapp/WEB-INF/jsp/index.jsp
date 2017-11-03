@@ -255,11 +255,11 @@ function openTab(text, url, iconCls) {
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-khgxfx'"
 					style="width: 150px;">客户贡献分析</a> <a
-					href="javascript:openTab('客户构成分析','khgcfx.jsp','icon-khgcfx')"
+					href="javascript:openTab('客户构成分析','${ctx}/customer/getkhgc.action','icon-khgcfx')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-khgcfx'"
 					style="width: 150px;">客户构成分析</a> <a
-					href="javascript:openTab('客户服务分析','khfwfx.jsp','icon-khfwfx')"
+					href="javascript:openTab('客户服务分析','${ctx}/customer/getkhfw.action','icon-khfwfx')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-khfwfx'"
 					style="width: 150px;">客户服务分析</a> <a

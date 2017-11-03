@@ -17,6 +17,28 @@ public class CustomerController {
 	@Autowired
 	private ICustomerService customerService;
 
+	@RequestMapping(value="/getkhfw")
+	public String getkhfw(){
+		return "khfw";
+	}
+	
+	@RequestMapping(value="/findkhfw")
+	@ResponseBody
+	public ServerResponse findkhfw(){
+		return customerService.findkhfw();
+	}
+	
+	@RequestMapping(value="/getkhgc")
+	public String getkhgc(){
+		return "khgc";
+	}
+	
+	@RequestMapping(value="/findCustomerConstitute")
+	@ResponseBody
+	public ServerResponse findCustomerConstitute(){
+		return customerService.findCustomerConstitute();
+	}
+	
 	@RequestMapping(value="/findById")
 	@ResponseBody
 	public Customer findById(Integer id){

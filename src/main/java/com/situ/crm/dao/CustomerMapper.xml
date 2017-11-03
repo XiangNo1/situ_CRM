@@ -571,4 +571,11 @@
  	</if>
  	GROUP BY c.id ORDER BY contribute DESC
   </select>
+  <!-- 客户构成分析 -->
+  <select id="findCustomerConstitute" resultType="com.situ.crm.vo.CustomerConstitute">
+  	SELECT LEVEL AS CustomerLevel,COUNT(LEVEL) AS CustomerNum
+	FROM customer
+	GROUP BY LEVEL;
+  </select>
+  
 </mapper>

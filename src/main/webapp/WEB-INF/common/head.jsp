@@ -17,3 +17,4 @@
 <script type="text/javascript" src="${ctx}/resources/thirdlib/jquery-easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/thirdlib/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${ctx}/resources/thirdlib/jquery-easyui/jquery.edatagrid.js"></script>
+<script type="text/javascript" src="${ctx}/resources/thirdlib/echarts.common.min.js"></script>

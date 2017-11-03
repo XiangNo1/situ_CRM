@@ -31,4 +31,8 @@ public interface ICustomerService {
  	void checkCustomerLoss();
 
 	EasyUIDataGrideResult findCustomerContribute(Integer page, Integer rows, CustomerContribute customerContribute);
+
+	ServerResponse findCustomerConstitute();
+
+	ServerResponse findkhfw();
 }

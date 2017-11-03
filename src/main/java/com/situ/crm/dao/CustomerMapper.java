@@ -2,6 +2,8 @@ package com.situ.crm.dao;
 
 import com.situ.crm.pojo.Customer;
 import com.situ.crm.pojo.CustomerExample;
+import com.situ.crm.pojo.CustomerService;
+import com.situ.crm.vo.CustomerConstitute;
 import com.situ.crm.vo.CustomerContribute;
 
 import java.util.List;
@@ -106,4 +108,7 @@ public interface CustomerMapper {
 	List<CustomerContribute> findCustomerContribute(Integer page, Integer rows, String name);
 
 	List<CustomerContribute> findCustomerContribute(@Param(value="name")String name);
+
+	List<CustomerConstitute> findCustomerConstitute();
+
 }

@@ -14,21 +14,26 @@ import com.situ.crm.common.ServerResponse;
 import com.situ.crm.dao.CustomerLossMapper;
 import com.situ.crm.dao.CustomerMapper;
 import com.situ.crm.dao.CustomerOrderMapper;
+import com.situ.crm.dao.CustomerServiceMapper;
 import com.situ.crm.pojo.Customer;
 import com.situ.crm.pojo.CustomerExample;
 import com.situ.crm.pojo.CustomerExample.Criteria;
 import com.situ.crm.pojo.CustomerLoss;
 import com.situ.crm.pojo.CustomerOrder;
+import com.situ.crm.pojo.CustomerService;
 import com.situ.crm.pojo.User;
 import com.situ.crm.pojo.UserExample;
 import com.situ.crm.util.Util;
+import com.situ.crm.vo.CustomerConstitute;
 import com.situ.crm.vo.CustomerContribute;
+import com.situ.crm.vo.khfu;
 
 @Service
 public class CustomerServiceImpl implements ICustomerService{
 	@Autowired
 	private CustomerMapper customerMapper;
-
+	@Autowired
+	private CustomerServiceMapper customerServiceMapper;
 	@Autowired
  	private CustomerOrderMapper customerOrderMapper;
  	
@@ -165,6 +170,20 @@ public class CustomerServiceImpl implements ICustomerService{
 		result.setTotal(total);
 		result.setRows(list);
 		return result;
+	}
+
+	@Override
+	public ServerResponse findCustomerConstitute() {
+		// TODO Auto-generated method stub
+		List<CustomerConstitute> list = customerMapper.findCustomerConstitute();
+		return ServerResponse.createSuccess("查找成功", list);
+	}
+
+	@Override
+	public ServerResponse findkhfw() {
+		// TODO Auto-generated method stub
+		List<khfu> list = customerServiceMapper.findkhfw();
+		return ServerResponse.createSuccess("查找成功", list);
 	}
 
 
