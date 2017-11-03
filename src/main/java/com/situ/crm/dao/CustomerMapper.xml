@@ -552,4 +552,23 @@
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  
+  <!-- 查询指定客户最后一个订单 -->
+  <select id="findLossCustomer" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> FROM customer AS c
+	WHERE id NOT IN (SELECT customer_id FROM customer_order WHERE DATE_ADD(order_date, INTERVAL 6 MONTH)>NOW())
+	AND c.status=0;
+  </select>
+  
+  <!-- 查询客户订单总额 -->
+  <select id="findCustomerContribute" parameterType="String" resultType="com.situ.crm.vo.CustomerContribute">
+  	SELECT c.name,SUM(oi.sum) AS contribute
+ 	FROM customer AS c LEFT JOIN customer_order AS co ON c.id=co.customer_id
+ 	LEFT JOIN order_item AS oi ON co.id=oi.order_id 
+ 	<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+ 	 where c.name like '%${name}%'
+ 	</if>
+ 	GROUP BY c.id ORDER BY contribute DESC
+  </select>
 </mapper>

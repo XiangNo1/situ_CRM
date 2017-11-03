@@ -2,6 +2,8 @@ package com.situ.crm.dao;
 
 import com.situ.crm.pojo.Customer;
 import com.situ.crm.pojo.CustomerExample;
+import com.situ.crm.vo.CustomerContribute;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -93,4 +95,15 @@ public interface CustomerMapper {
      * @mbggenerated Mon Oct 30 18:56:18 CST 2017
      */
     int updateByPrimaryKey(Customer record);
+    
+    
+    /**
+     * 查找最近六个月的流失客户
+     * @return
+     */
+	List<Customer> findLossCustomer();
+
+	List<CustomerContribute> findCustomerContribute(Integer page, Integer rows, String name);
+
+	List<CustomerContribute> findCustomerContribute(@Param(value="name")String name);
 }

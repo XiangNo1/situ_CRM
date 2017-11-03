@@ -5,6 +5,7 @@ import java.util.List;
 import com.situ.crm.common.EasyUIDataGrideResult;
 import com.situ.crm.common.ServerResponse;
 import com.situ.crm.pojo.Customer;
+import com.situ.crm.vo.CustomerContribute;
 
 public interface ICustomerService {
 	/**
@@ -24,4 +25,10 @@ public interface ICustomerService {
 
 	Customer findById(Integer id);
 
+	/**
+ 	 * 查询流失客户
+ 	 */
+ 	void checkCustomerLoss();
+
+	EasyUIDataGrideResult findCustomerContribute(Integer page, Integer rows, CustomerContribute customerContribute);
 }

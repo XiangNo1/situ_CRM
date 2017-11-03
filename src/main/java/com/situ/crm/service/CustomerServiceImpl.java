@@ -11,17 +11,56 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrideResult;
 import com.situ.crm.common.ServerResponse;
+import com.situ.crm.dao.CustomerLossMapper;
 import com.situ.crm.dao.CustomerMapper;
+import com.situ.crm.dao.CustomerOrderMapper;
 import com.situ.crm.pojo.Customer;
 import com.situ.crm.pojo.CustomerExample;
 import com.situ.crm.pojo.CustomerExample.Criteria;
+import com.situ.crm.pojo.CustomerLoss;
+import com.situ.crm.pojo.CustomerOrder;
+import com.situ.crm.pojo.User;
+import com.situ.crm.pojo.UserExample;
 import com.situ.crm.util.Util;
+import com.situ.crm.vo.CustomerContribute;
 
 @Service
 public class CustomerServiceImpl implements ICustomerService{
 	@Autowired
 	private CustomerMapper customerMapper;
 
+	@Autowired
+ 	private CustomerOrderMapper customerOrderMapper;
+ 	
+ 	@Autowired
+ 	private CustomerLossMapper customerLossMapper;
+ 	
+ 	@Override
+ 	 	public void checkCustomerLoss() {
+ 	 		System.out.println("CustomerServiceImpl.checkCustomerLoss()");
+ 	 		//1. 查找流失客户
+ 	 		List<Customer> customerList = customerMapper.findLossCustomer();
+ 	 		for (Customer customer : customerList) {
+ 	 			//2. 实例化CustomerLoss
+ 	 			CustomerLoss customerLoss = new CustomerLoss();
+ 	 			customerLoss.setCustomerNo(customer.getNum());//客户编号
+ 	 			customerLoss.setCustomerName(customer.getName());//客户名称
+ 	 			customerLoss.setCustomerManager(customer.getManagerName());//客户经理
+ 	 			//3.查找指定客户最近的一次订单
+ 	 			CustomerOrder customerOrder = customerOrderMapper.findLastOrderByCustomerId(customer.getId());
+ 	 			if (customerOrder == null) {
+ 	 				customerLoss.setLastOrderTime(null);
+ 	 			} else {
+ 	 				customerLoss.setLastOrderTime(customerOrder.getOrderDate());
+ 	 			}
+ 	 			//4.添加到客户流失表里面
+ 	 			customerLossMapper.insert(customerLoss);
+ 	 			//5、客户表中客户状态修改为1：流失状态
+ 	 			customer.setStatus(1);
+ 	 			customerMapper.updateByPrimaryKeySelective(customer);
+ 	 		}
+ 	 	}
+ 	
 	@Override
 	public EasyUIDataGrideResult findAll(Integer page, Integer rows, Customer customer) {
 		EasyUIDataGrideResult result = new EasyUIDataGrideResult();
@@ -99,6 +138,33 @@ public class CustomerServiceImpl implements ICustomerService{
 	public Customer findById(Integer id) {
 		// TODO Auto-generated method stub
 		return customerMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public EasyUIDataGrideResult findCustomerContribute(Integer page, Integer rows,
+			CustomerContribute customerContribute) {
+		EasyUIDataGrideResult result = new EasyUIDataGrideResult();
+		//设置分页
+		PageHelper.startPage(page, rows);
+		//rows(分页之后的数据)
+		String name = customerContribute.getName();
+		if (StringUtils.isNotEmpty(name)) {
+			try {
+				name = new String(name.getBytes("iso-8859-1"),"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println(name);
+		//list
+		List<CustomerContribute> list = customerMapper.findCustomerContribute(name);
+		PageInfo<CustomerContribute> pageInfo = new PageInfo<>(list);
+		//total
+		Integer total = (int) pageInfo.getTotal();
+		result.setTotal(total);
+		result.setRows(list);
+		return result;
 	}
 
 
