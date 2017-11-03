@@ -57,6 +57,16 @@ public class CustomerLossController {
 	public String index() {
 		return "customer_loss_manager";
 	}
+	@RequestMapping("/index2")
+	public String index2() {
+		return "customer_loss_manager2";
+	}
+	@RequestMapping("/findAll2")
+	@ResponseBody
+	public EasyUIDataGrideResult findAll2(Integer page, Integer rows, CustomerLoss customerLoss) {
+		System.out.println(page + "+" + rows);
+		return customerLossService.findAll2(page, rows, customerLoss);
+	}
 	
 	@RequestMapping("/findAll")
 	@ResponseBody

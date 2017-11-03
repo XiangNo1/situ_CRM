@@ -263,7 +263,7 @@ function openTab(text, url, iconCls) {
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-khfwfx'"
 					style="width: 150px;">客户服务分析</a> <a
-					href="javascript:openTab('客户流失分析','khlsfx.jsp','icon-khlsfx')"
+					href="javascript:openTab('客户流失分析','${ctx}/customerLoss/index2.action','icon-khlsfx')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-khlsfx'"
 					style="width: 150px;">客户流失分析</a>
