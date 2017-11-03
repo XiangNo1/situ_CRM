@@ -58,9 +58,9 @@ function clearForm(){
 					<td>
 						<select style="width: 160px;" class="easyui-combobox" id="serviceType" panelHeight='auto' name="serviceType" editable="false">
 							<option value=""></option>
-							<option value="1">咨询</option>
-							<option value="2">建议</option>
-							<option value="3">投诉</option>
+							<option value="咨询">咨询</option>
+							<option value="建议">建议</option>
+							<option value="投诉">投诉</option>
 						</select>
 						<font color="red">*</font>
 					</td>
