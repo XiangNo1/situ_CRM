@@ -179,10 +179,24 @@ $(function(){
 	<!-- toolbar 开始 -->
 	<div id="toolbar">
 		<a class="easyui-linkbutton" href="javascript:openUpdateDialog()" iconCls="icon-fwgd">查看客户服务详情</a>
-		
+		<div>
+		      客户名称：<input style="width: 100px;" type="text" id="customerSearch"></input>
+		      概要：<input style="width: 100px;" type="text" id="overviewSearch"></input>
+		       服务类型：<select style="width: 100px;" editable="false" panelHeight='auto' id="serviceTypeSearch" class="easyui-combobox" >
+		       		<option value="">请选择</option>
+					<option value="咨询">咨询</option>
+					<option value="建议">建议</option>
+					<option value="投诉">投诉</option>
+				</select>
+			创建时间范围：
+				<input id="startTime" name="startTime" class="easyui-datebox" data-options="sharedCalendar:'#cc'">
+				<input id="endTime" name="endTime" class="easyui-datebox" data-options="sharedCalendar:'#cc'"> 	
+		  <a href="javascript:doSearch();" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
+		</div>
 	</div>
 	<!-- toolbar 结束 -->
-	
+	<!-- 日历 -->
+	<div id="cc" class="easyui-calendar"></div>
 	<!-- 添加和修改的dialog 开始 -->
 	<div id="dialog" class="easyui-dialog" closed="true" modal="true"
 		style="width:690;height:270,padding: 10px 20px" buttons="#dialog-button">

@@ -181,7 +181,7 @@ function openTab(text, url, iconCls) {
 		<table style="padding: 5px" width="100%">
 			<tr>
 				<td width="50%"><img alt="logo"
-					src="${pageContext.request.contextPath}/images/bglogo.png"></td>
+					src="${pageContext.request.contextPath}/resources/images/bjlogo.png"></td>
 				<td valign="bottom" align="right" width="50%"><font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.name }</font>【${currentUser.trueName }】【${currentUser.roleName }】
 				</td>
 			</tr>
