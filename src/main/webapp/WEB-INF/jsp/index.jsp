@@ -237,15 +237,15 @@ function openTab(text, url, iconCls) {
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-fwfp'" style="width: 150px;">服务分配</a>
 				<a
-					href="javascript:openTab('服务处理','customerServiceProce.jsp','icon-fwcl')"
+					href="javascript:openTab('服务处理','${ctx}/customerService3/index.action','icon-fwcl')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-fwcl'" style="width: 150px;">服务处理</a>
 				<a
-					href="javascript:openTab('服务反馈','customerServiceFeedback.jsp','icon-fwfk')"
+					href="javascript:openTab('服务反馈','${ctx}/customerService4/index.action','icon-fwfk')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-fwfk'" style="width: 150px;">服务反馈</a>
 				<a
-					href="javascript:openTab('服务归档','customerServiceFile.jsp','icon-fwgd')"
+					href="javascript:openTab('服务归档','${ctx}/customerService5/index.action','icon-fwgd')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-fwgd'" style="width: 150px;">服务归档</a>
 			</div>
